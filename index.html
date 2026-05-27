@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>POS Indonesia Tracking Opener</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      width: 400px;
+    }
+
+    h2 {
+      margin-top: 0;
+      text-align: center;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      margin-top: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-sizing: border-box;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      background: #ff7a00;
+      color: white;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      background: #e56f00;
+    }
+
+    .url-preview {
+      margin-top: 15px;
+      font-size: 12px;
+      word-break: break-all;
+      color: #555;
+      display: none;
+    }
+
+    footer {
+      margin-top: 20px;
+      font-size: 13px;
+      color: #666;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Lacak Instan Kiriman POS</h2>
+
+    <input
+      type="text"
+      id="resiInput"
+      placeholder="Enter tracking number"
+    />
+
+    <button onclick="openTracking()">
+      Lacak
+    </button>
+
+    <div class="url-preview" id="preview"></div>
+  </div>
+
+  <footer>
+    Vibe Coded by Adhitama
+  </footer>
+
+  <script>
+    const baseUrl =
+      "https://lacak-mitra.posindonesia.co.id/lacak_barcode.php?id=NOMORRESI&6f017f90-f299-11ec-988f-6f1763dc6f47xdsdkjshhsahsaks";
+
+    const input = document.getElementById("resiInput");
+    const preview = document.getElementById("preview");
+
+    function getTrackingUrl() {
+      const resi = input.value.trim();
+      return baseUrl.replace("NOMORRESI", encodeURIComponent(resi));
+    }
+
+    function updatePreview() {
+      // Auto uppercase
+      input.value = input.value.toUpperCase();
+
+      const resi = input.value.trim();
+
+      // Hide preview if empty
+      if (!resi) {
+        preview.style.display = "none";
+        preview.textContent = "";
+        return;
+      }
+
+      preview.style.display = "block";
+      preview.textContent = getTrackingUrl();
+    }
+
+    function openTracking() {
+      const resi = input.value.trim();
+
+      if (!resi) {
+        alert("Please enter tracking number");
+        return;
+      }
+
+      window.open(getTrackingUrl(), "_blank");
+    }
+
+    // Detect Enter key
+    input.addEventListener("keydown", function(event) {
+      if (event.key === "Enter") {
+        openTracking();
+      }
+    });
+
+    // Update preview on typing
+    input.addEventListener("input", updatePreview);
+
+    updatePreview();
+  </script>
+
+</body>
+</html>
