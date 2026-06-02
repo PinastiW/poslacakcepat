@@ -88,6 +88,17 @@
       color: #333;
     }
 
+    .info-note {
+      font-size: 11px;
+      color: #64748b;
+      margin-top: -12px;
+      margin-bottom: 18px;
+      line-height: 1.4;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
     button {
       width: 100%;
       padding: 12px;
@@ -133,6 +144,10 @@
         autofocus
       />
       <button id="clearBtn" class="clear-btn" aria-label="Clear text">&times;</button>
+    </div>
+
+    <div class="info-note">
+      ⚠️ Lacak hanya bisa dilakukan dalam jaringan intranet kantor atau VPN
     </div>
 
     <button onclick="openTracking()">
