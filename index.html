@@ -3,12 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>POS Indonesia Tracking Opener</title>
+  <title>Lacak Instan Kiriman POS</title>
+  <link rel="icon" type="image/png" href="fav.png" />
 
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f4f4f4;
+      background: #0b1325 url('bg.png') no-repeat center center fixed;
+      background-size: cover;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -30,15 +32,60 @@
       text-align: center;
     }
 
-    input {
+    .input-wrapper {
+      position: relative;
       width: 100%;
-      padding: 12px;
-      font-size: 16px;
       margin-top: 10px;
       margin-bottom: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px 40px 12px 12px;
+      font-size: 16px;
       border: 1px solid #ccc;
       border-radius: 8px;
       box-sizing: border-box;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input:focus {
+      border-color: #ff7a00;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.15);
+    }
+
+    .clear-btn {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      font-size: 18px;
+      color: #999;
+      cursor: pointer;
+      padding: 0;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s, background-color 0.2s, color 0.2s;
+    }
+
+    .clear-btn.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .clear-btn:hover {
+      background-color: #f0f0f0;
+      color: #333;
     }
 
     button {
@@ -68,7 +115,7 @@
     footer {
       margin-top: 20px;
       font-size: 13px;
-      color: #666;
+      color: #8892b0;
       text-align: center;
     }
   </style>
@@ -78,11 +125,15 @@
   <div class="container">
     <h2>Lacak Instan Kiriman POS</h2>
 
-    <input
-      type="text"
-      id="resiInput"
-      placeholder="Enter tracking number"
-    />
+    <div class="input-wrapper">
+      <input
+        type="text"
+        id="resiInput"
+        placeholder="Masukan nomor resi"
+        autofocus
+      />
+      <button id="clearBtn" class="clear-btn" aria-label="Clear text">&times;</button>
+    </div>
 
     <button onclick="openTracking()">
       Lacak
@@ -101,6 +152,7 @@
 
     const input = document.getElementById("resiInput");
     const preview = document.getElementById("preview");
+    const clearBtn = document.getElementById("clearBtn");
 
     function getTrackingUrl() {
       const resi = input.value.trim();
@@ -112,6 +164,13 @@
       input.value = input.value.toUpperCase();
 
       const resi = input.value.trim();
+
+      // Show/hide clear button
+      if (resi) {
+        clearBtn.classList.add("visible");
+      } else {
+        clearBtn.classList.remove("visible");
+      }
 
       // Hide preview if empty
       if (!resi) {
@@ -145,7 +204,15 @@
     // Update preview on typing
     input.addEventListener("input", updatePreview);
 
+    // Clear button functionality
+    clearBtn.addEventListener("click", function() {
+      input.value = "";
+      updatePreview();
+      input.focus();
+    });
+
     updatePreview();
+    input.focus();
   </script>
 
 </body>
